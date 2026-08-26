@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@source not "../../trekigo_luxury_villa_experience_booking.html";
+
+@theme inline {
+  --color-primary: #1b5c32;
+  --color-primary-fixed: #1b5c32;
+  --color-primary-fixed-dim: #247a44;
+  --color-primary-container: #e7f4ec;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #ffffff;
+  --color-on-primary-container: #1b5c32;
+  --color-on-primary-fixed-variant: #0f3a20;
+  --color-inverse-primary: #8fcb9b;
+  --color-surface-tint: #1b5c32;
+
+  --color-background: #f6f8f6;
+  --color-on-background: #1a211c;
+  --color-surface: #ffffff;
+  --color-on-surface: #1a211c;
+  --color-on-surface-variant: #5b665e;
+  --color-surface-bright: #f6f8f6;
+  --color-surface-dim: #eef2ee;
+  --color-surface-variant: #e8eee9;
+  --color-surface-container: #ffffff;
+  --color-surface-container-low: #f3f6f3;
+  --color-surface-container-high: #eef2ee;
+  --color-surface-container-highest: #e4ebe5;
+  --color-surface-container-lowest: #ffffff;
+
+  --color-outline: #c9d4cc;
+  --color-outline-variant: #e2ebe4;
+
+  --color-secondary: #4f5d54;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #e7f4ec;
+  --color-on-secondary-container: #1b5c32;
+  --color-secondary-fixed: #e7f4ec;
+  --color-secondary-fixed-dim: #cfe6d7;
+  --color-on-secondary-fixed: #0f3a20;
+  --color-on-secondary-fixed-variant: #1b5c32;
+
+  --color-tertiary: #5b665e;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #eef2ee;
+  --color-on-tertiary-container: #5b665e;
+  --color-tertiary-fixed: #e8eee9;
+  --color-tertiary-fixed-dim: #d5ddd7;
+  --color-on-tertiary-fixed: #1a211c;
+  --color-on-tertiary-fixed-variant: #5b665e;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-inverse-on-surface: #f6f8f6;
+  --color-inverse-surface: #2e3132;
+
+  --radius-DEFAULT: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+  --radius-md: 0.5rem;
+
+  --spacing-margin-desktop: 80px;
+  --spacing-margin-mobile: 20px;
+  --spacing-section-gap: 48px;
+  --spacing-gutter: 16px;
+  --spacing-base: 8px;
+  --spacing-container-margin-mobile: 20px;
+  --spacing-container-margin-desktop: 80px;
+
+  --font-body-md: var(--font-inter), sans-serif;
+  --font-label-caps: var(--font-inter), sans-serif;
+  --font-display-xl: var(--font-sora-family), sans-serif;
+  --font-headline-lg: var(--font-sora-family), sans-serif;
+  --font-sora: var(--font-sora-family), sans-serif;
+}
+
+* {
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-sora-family), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.font-label-caps {
+  font-family: var(--font-inter), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.card-shadow {
+  box-shadow: 0 10px 30px rgba(27, 92, 50, 0.08);
+}
+
+.card-shadow-hover:hover {
+  box-shadow: 0 14px 36px rgba(27, 92, 50, 0.14);
+  transform: translateY(-2px);
+}
+
+body {
+  min-height: 100dvh;
+  background: #f6f8f6;
+  color: #1a211c;
+}

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Trekigo - Luxury Villa & Experience Booking</title>
+
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Space+Grotesk:wght@600&family=Hanken+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- React and Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#5c3676",
+                        "on-secondary-fixed": "#2d0548",
+                        "tertiary-container": "#ededed",
+                        "on-surface": "#191c1d",
+                        "tertiary-fixed": "#e2e2e2",
+                        "error": "#ba1a1a",
+                        "on-background": "#191c1d",
+                        "surface-bright": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#f2f4f5",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#121414",
+                        "surface-container": "#f8f9fa",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "secondary-fixed": "#f3daff",
+                        "primary-fixed-dim": "#aed500",
+                        "outline-variant": "#c5c9ac",
+                        "on-surface-variant": "#444933",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-tint": "#526600",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-fixed-dim": "#e2b6ff",
+                        "on-primary-fixed-variant": "#3d4d00",
+                        "on-tertiary-container": "#6b6b6b",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#5e5e5e",
+                        "on-primary-container": "#5d7300",
+                        "inverse-primary": "#aed500",
+                        "on-secondary": "#ffffff",
+                        "surface": "#ffffff",
+                        "on-secondary-container": "#664081",
+                        "inverse-surface": "#2e3132",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed": "#c7f300",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f3f4f5",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#d1ff00",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#754e90",
+                        "primary": "#526600",
+                        "background": "#f8f9fa",
+                        "secondary-container": "#e0b3fc",
+                        "on-primary-fixed": "#171e00",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "md": "0.375rem"
+                    },
+                    spacing: {
+                        "margin-desktop": "80px",
+                        "margin-mobile": "20px",
+                        "section-gap": "48px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "container-margin-mobile": "20px",
+                        "container-margin-desktop": "80px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "display-xl": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "sora": ["Sora"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { font-family: 'Hanken Grotesk', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Sora', sans-serif; font-weight: 800; }
+        .font-label-caps { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .glass {
+            background: rgba(248, 249, 250, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .sharp-shadow { box-shadow: 4px 4px 0 0 #c7f300; }
+        .sharp-shadow-hover:hover {
+            box-shadow: 6px 6px 0 0 #c7f300;
+            transform: translate(-2px, -2px);
+        }
+        
+        .transition-all { transition: all 0.2s ease-in-out; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Shared Components ---
+
+        const Navbar = () => {
+            const navigate = useNavigate();
+            return (
+                <nav className="bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-outline-variant h-20 flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop">
+                    <Link to="/" className="flex items-center gap-4">
+                        <span className="font-display text-2xl md:text-3xl font-extrabold text-primary-fixed">Trekigo</span>
+                    </Link>
+                    <div className="hidden md:flex gap-8 items-center">
+                        <Link to="/" className="text-on-surface-variant hover:text-primary-fixed transition-colors font-label-caps text-xs">Villas</Link>
+                        <Link to="/" className="text-on-surface-variant hover:text-primary-fixed transition-colors font-label-caps text-xs">Cottages</Link>
+                        <Link to="/" className="text-on-surface-variant hover:text-primary-fixed transition-colors font-label-caps text-xs">Resorts</Link>
+                        <Link to="/trust" className="text-on-surface-variant hover:text-primary-fixed transition-colors font-label-caps text-xs">Experiences</Link>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <button className="scale-95 active:scale-90 transition-transform text-primary">
+                            <span className="material-symbols-outlined">notifications</span>
+                        </button>
+                        <button className="scale-95 active:scale-90 transition-transform text-primary">
+                            <span className="material-symbols-outlined">favorite</span>
+                        </button>
+                        <div className="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-primary-fixed hidden md:block">
+                            <img alt="User" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBseYI1OUfKho0q8owUvjCwVhy-BOIpXeo8GXbKPIH_UvcpHvCPPZ4BcS5b7e7eZgbNFvw-L8Is4feEMzUUAAdgJdCgPlcChvy-b1zJ7E27IVUVZ2szGvN6F6aW7ZVCW3yjscXSzWEwWEwTCHhUZUWlWD4wgwfKRqqdLp0-a6buq3GJmz5SgIj6s6g3mkGBKfgqKOE8LkAPtSj_sDn-hyi14Pidf-fa6yQADLCo2gJT-8dUgAzOzF2BGA"/>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        const MobileNav = () => (
+            <div className="bg-surface/90 backdrop-blur-lg fixed bottom-0 w-full z-50 md:hidden border-t border-outline-variant flex justify-around items-center py-2 px-4 rounded-t-xl">
+                <Link to="/" className="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full w-12 h-12 active:scale-90 transition-all">
+                    <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>explore</span>
+                </Link>
+                <button className="flex flex-col items-center justify-center text-on-surface-variant w-12 h-12">
+                    <span className="material-symbols-outlined">favorite</span>
+                </button>
+                <button className="flex flex-col items-center justify-center text-on-surface-variant w-12 h-12">
+                    <span className="material-symbols-outlined">travel_explore</span>
+                </button>
+                <button className="flex flex-col items-center justify-center text-on-surface-variant w-12 h-12">
+                    <span className="material-symbols-outlined">person</span>
+                </button>
+            </div>
+        );
+
+        const Footer = () => (
+            <footer className="w-full px-container-margin-mobile md:px-container-margin-desktop py-12 grid grid-cols-1 md:grid-cols-4 gap-8 bg-surface-container-lowest border-t-4 border-primary-fixed shadow-[0_-8px_0_0_#c7f300] mt-12">
+                <div className="flex flex-col gap-4">
+                    <span className="font-display text-3xl font-black text-primary-fixed">Trekigo</span>
+                    <p className="text-secondary">© 2024 Trekigo. Go Wild, Stay Chill.</p>
+                </div>
+                {['Company', 'Social', 'Legal'].map((title) => (
+                    <div key={title} className="flex flex-col gap-2">
+                        <h4 className="font-bold text-on-surface">{title}</h4>
+                        <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-x-1" href="#">Links</a>
+                        <a className="text-on-surface-variant hover:text-primary transition-all hover:translate-x-1" href="#">Support</a>
+                    </div>
+                ))}
+            </footer>
+        );
+
+        // --- Pages ---
+
+        const HomePage = () => {
+            return (
+                <div className="pt-20">
+                    <Navbar />
+                    <main className="max-w-[1280px] mx-auto pt-8 pb-16">
+                        {/* Offers Banner */}
+                        <section className="px-container-margin-mobile md:px-container-margin-desktop mb-12">
+                            <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory">
+                                <div className="flex-none w-full md:w-[600px] h-48 rounded-xl bg-surface-container-high border border-outline-variant relative overflow-hidden snap-center">
+                                    <img className="absolute inset-0 w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvQXX-m1YAw4awxbx4GONUbuQPeZdhrFEQOwzU91kJQXOn6YqeNqMJRHJT4frOheZxt7dB2eW6dFZaB9sxqIECV0KEGkx0RubqDqgXRyaC8lES3AswDmFtrN4D_ovSVtPhIfDDaNmDl4sGz48rzgZIaflsDN3isZWaIQJWm8-RPRf3px40vmBpisc5gnrNtlvGLW1bRAjaLw6aeNDSEkegFemTjuL0etM-l_s6jCN9xEiwQ2J6HCzftg" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent p-6 flex flex-col justify-center">
+                                        <span className="font-label-caps text-xs text-primary mb-2">LIMITED TIME</span>
+                                        <h2 className="text-2xl md:text-3xl text-primary mb-4 w-2/3">Wild Weekend Getaways</h2>
+                                        <button className="bg-primary-container text-on-primary-container font-label-caps text-xs px-4 py-2 rounded sharp-shadow w-fit">Claim Offer</button>
+                                    </div>
+                                </div>
+                                <div className="flex-none w-full md:w-[600px] h-48 rounded-xl bg-surface-container-high border border-outline-variant relative overflow-hidden snap-center">
+                                    <img className="absolute inset-0 w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV22_c2YpGWR9siDuzZI9rWAWSQgzsRWyEeOkv3gRioW6pw5zFmz1FOTA0aEzQkQCbMDajhZGMROW8QFiy2XnffUe836nDxO5OTvopOHFqVBGFfXE8Xw4WqIYL5n6IJtoQip498_zY2lh1rqxOe6wPh54dLRhyW9Y4LZ6aW2jrQikCOWo0IqLaZNrM2NdKLXqkbQwTlPybEH7jKebcCR2awq_NitpXJe-m4aqXysdxt2blGl3gfai6Dg" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent p-6 flex flex-col justify-center">
+                                        <span className="font-label-caps text-xs text-secondary mb-2">NEW ADDITION</span>
+                                        <h2 className="text-2xl md:text-3xl text-primary mb-4 w-2/3">Glamping in the Clouds</h2>
+                                        <button className="bg-primary-container text-on-primary-container font-label-caps text-xs px-4 py-2 rounded sharp-shadow w-fit">Explore Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Search */}
+                        <section className="px-container-margin-mobile md:px-container-margin-desktop mb-12">
+                            <div className="relative w-full max-w-2xl mx-auto glass rounded-full border border-primary flex items-center p-2 pl-4">
+                                <span className="material-symbols-outlined text-primary mr-3">search</span>
+                                <input className="w-full bg-transparent border-none focus:ring-0 text-on-background py-2" placeholder="Search for a property / exp..." type="text"/>
+                            </div>
+                        </section>
+
+                        {/* Destinations */}
+                        <section className="px-container-margin-mobile md:px-container-margin-desktop mb-12">
+                            <h3 className="text-2xl md:text-3xl text-primary mb-6 flex items-center gap-2">
+                                Pick a Destination <span className="material-symbols-outlined text-primary-fixed">location_on</span>
+                            </h3>
+                            <div className="grid grid-cols-3 gap-4">
+                                {['Lonavala', 'Karjat', 'Mulshi'].map((name, i) => (
+                                    <div key={name} className="flex flex-col items-center group cursor-pointer">
+                                        <div className="w-full aspect-square rounded-xl bg-surface-container-high border border-outline-variant overflow-hidden mb-3 relative flex items-center justify-center group-hover:border-primary-fixed group-hover:sharp-shadow transition-all">
+                                            <span className="material-symbols-outlined text-4xl text-secondary group-hover:text-primary-fixed z-10">landscape</span>
+                                            <img className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" src={[
+                                                "https://lh3.googleusercontent.com/aida-public/AB6AXuCymd4KrUQfi--qHcVqH8fCscQfZB96cYd8DY4hpWgkRLi5pfo4fUmrKyeh2qbtMWSUX4Jsb0AW2TCVEmjws-GrYDMQoIriLv7B4ffSsry6F_DlaUdIO4fNdSmkJfVIYkHc3pK0PoSo2mtwxMYCCfuvOc3QuiFp3G1u1KPrJch2ki2YBx_o7BP3mXrfOC5rFbe-D6OB7l47AB3anGMcr4zP8vB2h6Mm6C0NpelQ_g-1UQJ5JLT2GVVe1w",
+                                                "https://lh3.googleusercontent.com/aida-public/AB6AXuBlF-XYRUtIwHh2ddbyGxyrN1Rn4snENUawh68Tc0ydXCTr5zlQ9hPxns9CPIYQqcqPqeH-aijkVRdEse7EoOi6O3yKAg65Px8UpEnlxBmuy9iO_9hl2tqxDnP2A5Rtx_eAoQuAHirF1A-QfRgTvBDMswt2o6hJ6zu6e8pRVQDD9rTsy1413aN_KIwbPKKxvaGwZaaXSmcBceNC9i0YF6MK_tltWC6QK2h-XVa0H2TsNAuogiIRBkGOww",
+                                                "https://lh3.googleusercontent.com/aida-public/AB6AXuC9bj6Y3ZgBSwalVmTnEU77AclenY0Otl_tnyNXgCDX3XSRANXSDiO1ILdu1957pkuNAgaybPWnjeWNCju0M3_GZy-YgMU9MartjgOnvkfEv8e4E1vP2J_rAEvj0t0M7TYYUf8WQRMPlOMZ-Yg0Rw94qIaiUkULmELOC4y6IgcKqly45slNvXAPPW1-9DcC7hwrzwu-pYnD8oLc4v0eIRKYBQVo_C9q9weBiE94pxU-gUzIf_UoA7vzmw"
+                                            ][i]} />
+                                        </div>
+                                        <span className="font-label-caps text-xs text-on-surface group-hover:text-primary">{name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* All Properties */}
+                        <section className="px-container-margin-mobile md:px-container-margin-desktop">
+                            <div className="flex justify-between items-end mb-6">
+                                <h2 className="text-2xl md:text-3xl text-on-surface">All properties</h2>
+                                <Link to="/trust" className="text-primary font-bold hover:underline flex items-center gap-1">View all <span className="material-symbols-outlined text-sm">arrow_forward</span></Link>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[
+                                    { name: 'Neon Peak Villa', loc: 'Lonavala', price: '12,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjqVhYz0UWIUTogChV8SvQAoIAXU20rEd03wSPWnxb1uIE9WSqWNjpFYQcsO3Ws-AqcQcNu7NcPsxti-7kPFzy-38Nc2HKnpVnQTHuIE--ME9rL1hVfreY78HWNhkvoxPJk0JIk_xShLRdSrvLQheVRNTe78UIDq9hJexSbMsgLjAw366bSo9Ty-WrwSiuyhO6AtRsebrsvdXnDAXftKJuIyHlrCkjHVAxEEu8a6pbSB5gQ6mBpJP8Mg' },
+                                    { name: 'Cyber Cabin', loc: 'Karjat', price: '8,500', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlx6YwXBTL_qeMBaCDX_x-TMjFEmol9IZwElNVid3Ggz1j71m6GGa1sTFiqVNLyccwB1SAvksaJEur_UCXZUqTxtN_cFTexT7hzRglJlUQID3rlHXf2Sb0C_7HMVHjuUdQn4RsHoaprvLLni-j6Qt6XPOV-FCSjQ04_QkO3w7fRXrk3YYbpzNraG03A6tmx3lMk5_ju0pGQ-qHmhA3AQ0NeIQfKbzlzcug1pOCe0Rwy6mHWHT-ttXQGg' },
+                                    { name: 'Mulshi Glass Pods', loc: 'Mulshi', price: '15,000', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCC0cYK-uqVaSWVfvEFDCXZrJXot1AcfsPdSp0sRNwY-LxkQxVh_yF3VGerDRvTvlCmn5oCicBCuHO2h0zTJlyJxI1ojGT8gE4KKbbh1QxtVHV43sU4nJUeX5J6rKSpFcL0SqN23hh47TQu83dfktMsWYymp-8pN8iti3hVCH-YWPajOV1ITc1KfIUKpsjV9WTabO8KpdoAmN1EK5zewzhkboDrJ2qJECfZ_Ppg033Iv9IYSY35PHihgg' }
+                                ].map((prop) => (
+                                    <Link to="/property/1" key={prop.name} className="rounded-xl overflow-hidden bg-surface-container border border-outline-variant group cursor-pointer relative">
+                                        <div className="aspect-[4/3] w-full relative overflow-hidden">
+                                            <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={prop.img} />
+                                            <div className="absolute top-4 right-4 bg-surface/80 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 border border-outline-variant">
+                                                <span className="material-symbols-outlined text-primary text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                                                <span className="font-label-caps text-xs">4.9</span>
+                                            </div>
+                                        </div>
+                                        <div className="p-4 glass absolute bottom-0 left-0 right-0 m-2 rounded-lg border border-outline-variant/50">
+                                            <h3 className="font-bold text-lg mb-1 truncate">{prop.name}</h3>
+                                            <p className="text-on-surface-variant text-sm flex items-center gap-1 mb-2"><span className="material-symbols-outlined text-xs">location_on</span> {prop.loc}</p>
+                                            <div className="flex justify-between items-center">
+                                                <span className="font-bold text-primary">₹{prop.price} <span className="text-xs text-on-surface-variant font-normal">/night</span></span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </section>
+                    </main>
+                    <Footer />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        const PropertyDetailsPage = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="pt-20">
+                    <Navbar />
+                    <main className="max-w-[1280px] mx-auto px-container-margin-mobile md:px-container-margin-desktop py-8">
+                        {/* Action Bar */}
+                        <div className="flex justify-between items-center mb-6">
+                            <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+                                <span className="material-symbols-outlined">arrow_back</span>
+                                <span>Back</span>
+                            </button>
+                            <div className="flex gap-4">
+                                <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-outline hover:border-primary-fixed transition-all">
+                                    <span className="material-symbols-outlined">share</span> Share
+                                </button>
+                                <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-outline hover:border-primary-fixed transition-all">
+                                    <span className="material-symbols-outlined">favorite_border</span> Save
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Image Gallery */}
+                        <section className="mb-12 relative">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 h-[530px] md:h-[618px] rounded-xl overflow-hidden border border-outline-variant sharp-shadow">
+                                <div className="md:col-span-3 h-full">
+                                    <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOGCtrPixi_yKstoQ8ARI3bGkJWEkA0y_570DBCdA0MVtowHUvm4NpdhLrIrR2YBeoN925m4k2IISqqDh8Pug24e6esjWDYHvuSaYuQfkAV4KUm0KsGtbWNQhBkJTcGK6r_wgu5YDJIrt2xynEJhgAT3Xt8HfJ50XgpXqkv2t21caFHKZ6ikxGTOkzIsF5BoK7GLjp4FFD3v1E9P81H4vpCnw313UK753H9GaF2CemADOsTzeh0JjVoA" />
+                                </div>
+                                <div className="hidden md:flex flex-col gap-2 h-full">
+                                    <img className="w-full h-1/2 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnGmi3ld7tqdpSjWbGrn4lpMLh3sx_4lbzAWlip35P8y3KKK0SJ-PfD36EzYYHPji8EWv2ihl4arhi8KpKwrnNWRvw32KjgIgb80XVt7dbSOoVwDILiO0_2i4BKlzdTyLvdjhGQnS3_tihdkSuQI7JcrgdayuENORmkYmdF8KWBMaFAz09VExQV7Kxs2zilz78rt_D9BJcsYarLe4ZgoJ-Fr085gcE1V82LL5_Ifm6kmD6RpFIVsCqgQ" />
+                                    <img className="w-full h-1/2 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5gKQeW20vf_h7Jz6ATxgJi1mymrvOq6LKxIlAfH0yQ7igneDFdqqF1_4gnSzDpIO1lqfWtV06dc5pcQBQVBNQ2W5XdG8jm3wPjvbfAkID9KWkNExHy1oUhkbDzeDuahLH5xOCUHiZQRgMoiSoYF_KRava9_2Cc3yylcadYruGjkGom1PibdRc0IWd9xGxUjMkmnsGiiM5HazSua1C_bmKO6ADgXDey32i45asvBMHg0n3xb5MuVqfkQ" />
+                                </div>
+                            </div>
+                            <button className="absolute bottom-4 right-4 bg-surface/80 backdrop-blur-md border border-primary-fixed px-4 py-2 rounded-full font-label-caps text-xs sharp-shadow">
+                                View All Photos
+                            </button>
+                        </section>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                            <div className="lg:col-span-2 space-y-12">
+                                <section>
+                                    <h1 className="text-3xl md:text-4xl text-primary-fixed mb-2">Neon Oasis Villa | VIL-404</h1>
+                                    <p className="text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-sm">location_on</span> Lonavala, Maharashtra</p>
+                                    
+                                    <div className="mt-8">
+                                        <h3 className="font-label-caps text-secondary text-xs mb-4">STORY HIGHLIGHTS</h3>
+                                        <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-4">
+                                            {[1,2,3,4,5].map(i => (
+                                                <div key={i} className="flex flex-col items-center gap-2 flex-shrink-0">
+                                                    <div className="w-16 h-16 rounded-full border-2 border-primary-fixed p-1">
+                                                        <img className="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr45_JJmTQaLWLzad7MqcOmpncBg0fj5I0ysIdL-GZjqWrkVGguaVXcPNiUP8T8NcQOrmSQ6Qd2lefA-KQbHJbFgGj8xwjJDx9HKOpmcRoOEtbhVL9rCRAbBufkyRsBRiNidjYspOwfS5fvYgFQ255Il-ZwviFINIPwXSyIhrQV7vBTFWjYd1sSY0vn87_LBtdZNUS1Z4DcHHCT8Blp4QwOk3cAn4YtnMnICB1IvSmowfNITDZuzNjLg" />
+                                                    </div>
+                                                    <span className="font-label-caps text-[10px]">Highlight {i}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="bg-surface-container-low p-6 rounded-xl border border-outline-variant">
+                                    <h2 className="text-2xl mb-6 border-b border-outline-variant pb-4">Inclusion & Timing</h2>
+                                    <ul className="space-y-4">
+                                        <li className="flex items-start gap-3">
+                                            <span className="material-symbols-outlined text-primary-fixed">check_circle</span>
+                                            <div>
+                                                <strong className="block">Check-in / Check-out</strong>
+                                                <span className="text-on-surface-variant">Check-in 2:00 PM | Check-out 11:00 AM</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </section>
+
+                                <section>
+                                    <h2 className="text-2xl mb-4">About Property</h2>
+                                    <p className="text-on-surface-variant leading-relaxed bg-surface-container p-6 rounded-xl border-l-4 border-primary-fixed">
+                                        Step into a neo-brutalist sanctuary surrounded by untamed jungle. The Neon Oasis Villa is designed for the modern explorer who demands high-contrast aesthetics and unapologetic luxury. With floor-to-ceiling windows, raw concrete finishes, and electric accents, every corner is curated for your feed.
+                                    </p>
+                                </section>
+
+                                <section>
+                                    <h2 className="text-2xl mb-4">Location</h2>
+                                    <div className="h-64 rounded-xl border border-outline-variant overflow-hidden relative">
+                                        <img className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCatKsmpOGmqKRKD8cGcfBGwSNp1fLXZIQTb_GjOseHuy1t7Xept4IBu2qUq_Brn9JvV0lJzCXbN80HaPPMAlnJIgoJQW1SFMUfKmSRkCBr4VZ6ptxVs7h405p6LpsQxzikKcXBb9y8UKFCG2kTO73mtTchIzr4w1ynmhUJxudN_uoU4ArZSqxxzU12OA4lTM-yqEhzKYjrnH1ANdMh_cjly5RZbzD_fllO-oWJrHpJ10mEvzYEvrFUBQ" />
+                                        <div className="absolute top-4 left-4 glass p-4 rounded-lg border border-outline-variant shadow-lg">
+                                            <strong className="text-primary block">Lonavala Valley</strong>
+                                            <span className="text-xs text-on-surface-variant">Maharashtra, India</span>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <aside className="relative">
+                                <div className="sticky top-28 bg-surface-container p-6 rounded-2xl border border-outline-variant sharp-shadow">
+                                    <div className="flex justify-between items-end mb-6 pb-4 border-b border-outline-variant">
+                                        <div>
+                                            <span className="text-on-surface-variant line-through text-sm">₹25,000</span>
+                                            <div className="text-3xl font-extrabold text-primary">₹18,500 <span className="text-xs font-normal text-on-surface-variant">/ night</span></div>
+                                        </div>
+                                        <span className="bg-primary-container text-on-primary-container px-2 py-1 rounded text-xs font-bold mb-2">26% OFF</span>
+                                    </div>
+                                    <div className="space-y-4 mb-6">
+                                        <div className="flex justify-between items-center text-on-surface">
+                                            <span className="font-label-caps text-xs">Dates</span>
+                                            <span className="font-bold border-b border-outline-variant border-dashed">Select Dates</span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-on-surface">
+                                            <span className="font-label-caps text-xs">Guests</span>
+                                            <span className="font-bold border-b border-outline-variant border-dashed">2 Guests</span>
+                                        </div>
+                                    </div>
+                                    <Link to="/checkout" className="block w-full bg-primary-fixed text-on-primary-fixed font-bold py-4 rounded-xl text-center hover:bg-primary-fixed-dim hover:-translate-y-1 transition-all sharp-shadow-hover">
+                                        Reserve Now
+                                    </Link>
+                                    <p className="text-center text-on-surface-variant text-xs mt-4">You won't be charged yet</p>
+                                </div>
+                            </aside>
+                        </div>
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        const CheckoutPage = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background">
+                    <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant h-20 flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop">
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => navigate(-1)} className="text-on-surface-variant hover:text-primary transition-colors">
+                                <span className="material-symbols-outlined">arrow_back</span>
+                            </button>
+                            <div className="text-2xl font-extrabold text-primary">Trekigo</div>
+                        </div>
+                        <div className="hidden md:flex items-center gap-2 text-on-surface-variant font-label-caps text-xs">
+                            <span>Select Dates</span>
+                            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+                            <span className="text-primary">Confirm & Pay</span>
+                        </div>
+                    </header>
+
+                    <main className="pt-28 pb-16 px-container-margin-mobile md:px-container-margin-desktop max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                            <div className="lg:col-span-7 space-y-8">
+                                <h1 className="text-3xl font-bold">Confirm and pay</h1>
+                                
+                                <div className="glass p-6 rounded-xl border border-outline-variant">
+                                    <h2 className="text-xl text-primary mb-4">Your Trip</h2>
+                                    <div className="flex justify-between items-center pb-4 border-b border-outline-variant mb-4">
+                                        <div>
+                                            <div className="font-bold">Dates</div>
+                                            <div className="text-on-surface-variant text-sm">Nov 15 - Nov 20, 2024</div>
+                                        </div>
+                                        <button className="text-xs font-label-caps underline">Edit</button>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <div className="font-bold">Guests</div>
+                                            <div className="text-on-surface-variant text-sm">2 Guests</div>
+                                        </div>
+                                        <button className="text-xs font-label-caps underline">Edit</button>
+                                    </div>
+                                </div>
+
+                                <div className="glass p-6 rounded-xl border border-outline-variant">
+                                    <h2 className="text-xl text-primary mb-4">Payment Option</h2>
+                                    <div className="space-y-4">
+                                        <label className="flex items-start gap-4 p-4 border border-outline-variant rounded-lg cursor-pointer hover:border-primary-fixed transition-all">
+                                            <input type="radio" name="pay" defaultChecked className="mt-1 text-primary focus:ring-primary" />
+                                            <div>
+                                                <div className="font-bold">Pay in full</div>
+                                                <div className="text-on-surface-variant text-xs mt-1">Pay total amount now for a hassle-free stay.</div>
+                                            </div>
+                                        </label>
+                                        <label className="flex items-start gap-4 p-4 border border-outline-variant rounded-lg cursor-pointer hover:border-primary-fixed transition-all">
+                                            <input type="radio" name="pay" className="mt-1 text-primary focus:ring-primary" />
+                                            <div>
+                                                <div className="font-bold">Pay advance</div>
+                                                <div className="text-on-surface-variant text-xs mt-1">Pay ₹5,000 now, rest at the property.</div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button onClick={() => alert("Booking Confirmed!")} className="w-full bg-primary-fixed text-on-primary-fixed font-bold py-4 rounded-xl sharp-shadow-hover transition-all">
+                                    BOOK NOW
+                                </button>
+                            </div>
+
+                            <div className="lg:col-span-5">
+                                <div className="sticky top-28 glass p-6 rounded-xl border-2 border-primary-fixed shadow-xl">
+                                    <div className="flex gap-4 mb-6 pb-6 border-b border-outline-variant">
+                                        <div className="w-24 h-24 rounded-lg overflow-hidden border border-outline-variant">
+                                            <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqPOkYmACESp0Qvc-FdYZbroWrpXFLyw0ufsdFfVXJWTEq-JaB3lx21BRKzUTAvb7JLXiLXb85-uMhYGG6tMGSQ7d3y39l_M8CpPZLZWw05w_kvro3hXuFRnU8z8cPTnWAyam6dH8Obznz5vIMXommPa-3OfAQxBTjjE-C3SOF_WX_h9U_mpLVES45HjOWKga5VsZR_eTpgC23meLK4oUGdhpQtN_nDBhJwNEhIttP9geQUsZVjhRpCg" />
+                                        </div>
+                                        <div>
+                                            <div className="text-[10px] font-label-caps text-secondary mb-1">Villa</div>
+                                            <h3 className="font-bold">Neon Pines Retreat</h3>
+                                            <div className="flex items-center text-xs text-on-surface-variant">
+                                                <span className="material-symbols-outlined text-[14px] mr-1">location_on</span>
+                                                Whispering Woods, OR
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 className="font-bold mb-4">Price Details</h3>
+                                    <div className="space-y-3 mb-6 pb-6 border-b border-outline-variant text-sm">
+                                        <div className="flex justify-between text-on-surface-variant">
+                                            <span>₹18,500 x 5 nights</span>
+                                            <span>₹92,500</span>
+                                        </div>
+                                        <div className="flex justify-between text-on-surface-variant">
+                                            <span>Cleaning fee</span>
+                                            <span>₹1,200</span>
+                                        </div>
+                                        <div className="flex justify-between text-on-surface-variant">
+                                            <span>Service fee</span>
+                                            <span>₹2,400</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center text-xl font-bold text-primary">
+                                        <span>Total</span>
+                                        <span>₹96,100</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        const TrustPage = () => {
+            return (
+                <div className="pt-20">
+                    <Navbar />
+                    <main className="max-w-[1280px] mx-auto px-container-margin-mobile md:px-container-margin-desktop py-12 flex flex-col gap-12">
+                        <section className="flex flex-col gap-6">
+                            <h2 className="text-3xl text-primary-fixed">Why choose Trekigo</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {['Trusted', 'Secure Payment', 'Authentic Reviews'].map((title, i) => (
+                                    <div key={title} className="glass border-2 border-outline-variant rounded-xl p-8 flex flex-col items-center gap-4 hover:border-primary-fixed transition-colors group">
+                                        <div className="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container transition-colors">
+                                            <span className="material-symbols-outlined text-4xl" style={{fontVariationSettings: "'FILL' 1"}}>{['verified_user', 'lock', 'star'][i]}</span>
+                                        </div>
+                                        <h3 className="text-xl text-center">{title}</h3>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="flex flex-col gap-6">
+                            <div className="flex justify-between items-end">
+                                <h2 className="text-3xl text-primary-fixed">Reviews</h2>
+                                <div className="flex gap-2">
+                                    <button className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center"><span className="material-symbols-outlined">arrow_back</span></button>
+                                    <button className="w-10 h-10 rounded-full border border-primary-fixed flex items-center justify-center text-primary-fixed"><span className="material-symbols-outlined">arrow_forward</span></button>
+                                </div>
+                            </div>
+                            <div className="flex gap-6 overflow-x-auto hide-scrollbar pb-4 snap-x snap-mandatory">
+                                {[
+                                    { name: 'Alex M.', text: '"Unreal experience booking our villa party. The host was amazing and the location was literally exactly as pictured. 10/10."' },
+                                    { name: 'Sarah K.', text: '"The app is so slick and easy to use. Found a hidden gem of a cottage in the mountains within minutes. Peace of mind guaranteed."' }
+                                ].map((rev) => (
+                                    <div key={rev.name} className="min-w-[300px] md:min-w-[400px] bg-surface-container border-2 border-outline-variant p-6 rounded-xl snap-center sharp-shadow relative">
+                                        <span className="material-symbols-outlined absolute top-4 right-4 text-4xl text-surface-bright" style={{fontVariationSettings: "'FILL' 1"}}>format_quote</span>
+                                        <div className="flex gap-1 mb-4 text-primary-fixed">
+                                            {[1,2,3,4,5].map(s => <span key={s} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>)}
+                                        </div>
+                                        <p className="text-on-surface-variant mb-6 text-sm">{rev.text}</p>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-surface-variant border border-primary-fixed overflow-hidden">
+                                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbAGe7e4GgFHWdp3wBirkYAmRCRfqk55tZfKF4K5PVxfUmRYtatlYlcdN3y6ybWIvj3FhtLK0eqObL9f7Qa8FaTSPQnGcu5w9aYz6moO4uX3gMFlKtZNAgmMcCrMVEA8QGHOZNppaqdUju3rRYdA-1BIOo_iWOnymqKFFSL0qsmGSWkwfDCItI60JPEVayDRkiOFKl3F6hidNM9qAXqaFcfVpSN7ZvbSRXpLThWhqSYJyY_NZt7Ghg1A" className="w-full h-full object-cover" />
+                                            </div>
+                                            <span className="font-bold">{rev.name}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </main>
+                    <Footer />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        // --- App Component ---
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/property/:id" element={<PropertyDetailsPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/trust" element={<TrustPage />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const container = document.getElementById('root');
+        const root = createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+</html>
