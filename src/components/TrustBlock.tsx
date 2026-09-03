@@ -7,14 +7,19 @@ export function TrustBlock() {
     <>
       <section className="px-container-margin-mobile md:px-container-margin-desktop">
         <SectionHeading title="Why choose Trekigo" />
-        <div className="grid grid-cols-1 gap-4 rounded-xl border border-outline-variant bg-surface p-5 md:grid-cols-3 md:p-8">
+        <div className="flex gap-3 overflow-x-auto pb-1 hide-scrollbar md:grid md:grid-cols-3 md:overflow-visible">
           {trustHighlights.map((item) => (
-            <div key={item.title} className="flex flex-col items-center gap-3 px-4 py-3 text-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-container text-primary">
-                <Icon name={item.icon} filled className="text-[28px]" />
+            <div
+              key={item.title}
+              className="flex min-w-[220px] flex-1 items-center gap-4 rounded-xl border border-outline-variant bg-surface px-5 py-4 md:min-w-0"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-container-high">
+                <Icon name={item.icon} filled className="text-[24px]" />
               </span>
-              <h3 className="text-lg font-semibold">{item.title}</h3>
-              <p className="text-sm text-on-surface-variant">{item.text}</p>
+              <div>
+                <h3 className="text-base font-semibold">{item.title}</h3>
+                <p className="mt-1 text-sm text-on-surface-variant">{item.text}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -28,7 +33,7 @@ export function TrustBlock() {
               key={review.name}
               className="min-w-[280px] flex-1 snap-start rounded-xl border border-outline-variant bg-surface p-5 md:min-w-0"
             >
-              <div className="mb-3 flex gap-0.5 text-primary">
+              <div className="mb-3 flex gap-0.5 text-accent">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Icon key={star} name="star" filled className="text-sm" />
                 ))}
@@ -56,9 +61,9 @@ export function TrustBlock() {
             <a
               key={social.name}
               href={social.href}
-              className="flex items-center gap-2 rounded-xl border border-outline-variant bg-surface px-4 py-3 text-sm font-medium text-on-surface transition-colors hover:border-primary hover:text-primary"
+              className="flex items-center gap-2 rounded-xl border border-outline-variant bg-surface px-4 py-3 text-sm font-medium text-on-surface transition-colors hover:border-on-surface"
             >
-              <Icon name={social.icon} className="text-primary" />
+              <Icon name={social.icon} />
               {social.short}
             </a>
           ))}

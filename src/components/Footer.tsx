@@ -18,7 +18,7 @@ export function Footer() {
             {column.links.map((link) => (
               <Link
                 key={link}
-                href="/"
+                href={link === "Blogs" ? "/blogs" : "/"}
                 className="text-sm text-on-surface-variant transition-colors hover:text-primary"
               >
                 {link}

@@ -4,19 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
+import { PHONE } from "@/lib/data";
 
 const links = [
   { href: "/", label: "Stays" },
   { href: "/trust", label: "Experiences" },
   { href: "/#packages", label: "Packages" },
+  { href: "/blogs", label: "Blogs" },
   { href: "/#offers", label: "Offers" },
 ];
 
-type NavbarProps = {
-  variant?: "default" | "property" | "checkout";
-};
-
-export function Navbar({ variant = "default" }: NavbarProps) {
+export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,55 +35,24 @@ export function Navbar({ variant = "default" }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {variant === "property" ? (
-            <>
-              <a
-                href="tel:+919876543210"
-                className="hidden h-10 w-10 items-center justify-center rounded-full border border-outline-variant text-primary transition-colors hover:bg-primary-container sm:flex"
-                aria-label="Call support"
-              >
-                <Icon name="call" className="text-[20px]" />
-              </a>
-              <button
-                type="button"
-                className="hidden h-10 w-10 items-center justify-center rounded-full border border-outline-variant text-primary transition-colors hover:bg-primary-container sm:flex"
-                aria-label="Share"
-              >
-                <Icon name="share" className="text-[20px]" />
-              </button>
-            </>
-          ) : null}
-
-          {variant === "checkout" ? (
-            <Link
-              href="/"
-              className="hidden h-10 w-10 items-center justify-center rounded-full border border-outline-variant text-primary transition-colors hover:bg-primary-container sm:flex"
-              aria-label="Search"
-            >
-              <Icon name="search" className="text-[20px]" />
-            </Link>
-          ) : (
-            <button
-              type="button"
-              className="hidden h-10 w-10 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary-container md:flex"
-              aria-label="Saved stays"
-            >
-              <Icon name="favorite" className="text-[22px]" />
-            </button>
-          )}
-
+          <a
+            href={`tel:${PHONE}`}
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-outline-variant text-on-surface hover:bg-surface-container-high md:flex"
+            aria-label="Call"
+          >
+            <Icon name="call" className="text-[20px]" />
+          </a>
           <button
             type="button"
-            className="hidden h-10 w-10 items-center justify-center rounded-full bg-primary-container text-primary md:flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full bg-surface-container-high text-on-surface md:flex"
             aria-label="Account"
           >
             <Icon name="person" className="text-[22px]" />
           </button>
-
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-primary hover:bg-primary-container md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high md:hidden"
             aria-label="Open menu"
           >
             <Icon name={open ? "close" : "menu"} />
@@ -101,7 +68,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
                 key={link.label}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-base font-medium text-on-surface hover:bg-primary-container hover:text-primary"
+                className="rounded-lg px-3 py-2 text-base font-medium text-on-surface hover:bg-surface-container-high"
               >
                 {link.label}
               </Link>

@@ -26,11 +26,11 @@ export function StayExperiences() {
               onClick={() => setActive(type.id)}
               className={`flex min-w-[88px] flex-col items-center gap-2 rounded-xl border px-4 py-3 transition-colors ${
                 selected
-                  ? "border-primary bg-primary-container text-primary"
-                  : "border-outline-variant bg-surface text-on-surface-variant hover:border-primary"
+                  ? "border-on-surface bg-surface-container-high text-on-surface"
+                  : "border-outline-variant bg-surface text-on-surface-variant hover:border-on-surface"
               }`}
             >
-              <Icon name={type.icon} className="text-[26px] text-primary" />
+              <Icon name={type.icon} className="text-[26px]" />
               <span className="text-sm font-medium">{type.label}</span>
             </button>
           );
@@ -41,7 +41,7 @@ export function StayExperiences() {
         <h2 className="text-xl text-on-surface md:text-2xl">All properties</h2>
         <span className="text-sm text-on-surface-variant">{filtered.length} stays</span>
       </div>
-      <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-4">
+      <div className="flex gap-4 overflow-x-auto pb-1 hide-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4">
         {filtered.map((property) => (
           <PropertyCard key={property.id} property={property} />
         ))}

@@ -1,3 +1,7 @@
+export const PHONE = "+919876543210";
+export const PHONE_DISPLAY = "+91 98765 43210";
+export const WHATSAPP_LINK = "https://wa.me/919876543210";
+
 export const destinations = [
   {
     name: "Lonavala",
@@ -75,6 +79,7 @@ export const offers = [
   {
     label: "Limited time",
     title: "Wild Weekend Getaways",
+    subtitle: "Up to 26% off on hill stays this weekend.",
     cta: "Claim offer",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAvQXX-m1YAw4awxbx4GONUbuQPeZdhrFEQOwzU91kJQXOn6YqeNqMJRHJT4frOheZxt7dB2eW6dFZaB9sxqIECV0KEGkx0RubqDqgXRyaC8lES3AswDmFtrN4D_ovSVtPhIfDDaNmDl4sGz48rzgZIaflsDN3isZWaIQJWm8-RPRf3px40vmBpisc5gnrNtlvGLW1bRAjaLw6aeNDSEkegFemTjuL0etM-l_s6jCN9xEiwQ2J6HCzftg",
@@ -82,9 +87,50 @@ export const offers = [
   {
     label: "New addition",
     title: "Glamping in the Clouds",
+    subtitle: "Newly launched pods with valley views.",
     cta: "Explore now",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCV22_c2YpGWR9siDuzZI9rWAWSQgzsRWyEeOkv3gRioW6pw5zFmz1FOTA0aEzQkQCbMDajhZGMROW8QFiy2XnffUe836nDxO5OTvopOHFqVBGFfXE8Xw4WqIYL5n6IJtoQip498_zY2lh1rqxOe6wPh54dLRhyW9Y4LZ6aW2jrQikCOWo0IqLaZNrM2NdKLXqkbQwTlPybEH7jKebcCR2awq_NitpXJe-m4aqXysdxt2blGl3gfai6Dg",
+  },
+  {
+    label: "Weekday sale",
+    title: "Midweek Reset",
+    subtitle: "Up to ₹10,000 off on weekday bookings.",
+    cta: "View stays",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAjqVhYz0UWIUTogChV8SvQAoIAXU20rEd03wSPWnxb1uIE9WSqWNjpFYQcsO3Ws-AqcQcNu7NcPsxti-7kPFzy-38Nc2HKnpVnQTHuIE--ME9rL1hVfreY78HWNhkvoxPJk0JIk_xShLRdSrvLQheVRNTe78UIDq9hJexSbMsgLjAw366bSo9Ty-WrwSiuyhO6AtRsebrsvdXnDAXftKJuIyHlrCkjHVAxEEu8a6pbSB5gQ6mBpJP8Mg",
+  },
+  {
+    label: "Newly launched",
+    title: "Pay for 2, stay for 3",
+    subtitle: "Extra night free at select villas.",
+    cta: "Book now",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAOGCtrPixi_yKstoQ8ARI3bGkJWEkA0y_570DBCdA0MVtowHUvm4NpdhLrIrR2YBeoN925m4k2IISqqDh8Pug24e6esjWDYHvuSaYuQfkAV4KUm0KsGtbWNQhBkJTcGK6r_wgu5YDJIrt2xynEJhgAT3Xt8HfJ50XgpXqkv2t21caFHKZ6ikxGTOkzIsF5BoK7GLjp4FFD3v1E9P81H4vpCnw313UK753H9GaF2CemADOsTzeh0JjVoA",
+  },
+];
+
+export const blogs = [
+  {
+    slug: "monsoon-lonavala",
+    title: "How to plan a monsoon weekend in Lonavala",
+    excerpt: "Misty valleys, private pools, and the best time to leave Pune traffic behind.",
+    date: "12 Aug 2026",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAvQXX-m1YAw4awxbx4GONUbuQPeZdhrFEQOwzU91kJQXOn6YqeNqMJRHJT4frOheZxt7dB2eW6dFZaB9sxqIECV0KEGkx0RubqDqgXRyaC8lES3AswDmFtrN4D_ovSVtPhIfDDaNmDl4sGz48rzgZIaflsDN3isZWaIQJWm8-RPRf3px40vmBpisc5gnrNtlvGLW1bRAjaLw6aeNDSEkegFemTjuL0etM-l_s6jCN9xEiwQ2J6HCzftg",
+  },
+  {
+    slug: "villa-vs-cottage",
+    title: "Villa, cottage, or camping — what should you book?",
+    excerpt: "A simple guide to picking the stay that matches your group and mood.",
+    date: "28 Jul 2026",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBlx6YwXBTL_qeMBaCDX_x-TMjFEmol9IZwElNVid3Ggz1j71m6GGa1sTFiqVNLyccwB1SAvksaJEur_UCXZUqTxtN_cFTexT7hzRglJlUQID3rlHXf2Sb0C_7HMVHjuUdQn4RsHoaprvLLni-j6Qt6XPOV-FCSjQ04_QkO3w7fRXrk3YYbpzNraG03A6tmx3lMk5_ju0pGQ-qHmhA3AQ0NeIQfKbzlzcug1pOCe0Rwy6mHWHT-ttXQGg",
+  },
+  {
+    slug: "pawna-day-trips",
+    title: "Day trips around Pawna and Mulshi",
+    excerpt: "Lakes, viewpoints, and cafes worth the extra drive from your stay.",
+    date: "9 Jul 2026",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC9bj6Y3ZgBSwalVmTnEU77AclenY0Otl_tnyNXgCDX3XSRANXSDiO1ILdu1957pkuNAgaybPWnjeWNCju0M3_GZy-YgMU9MartjgOnvkfEv8e4E1vP2J_rAEvj0t0M7TYYUf8WQRMPlOMZ-Yg0Rw94qIaiUkULmELOC4y6IgcKqly45slNvXAPPW1-9DcC7hwrzwu-pYnD8oLc4v0eIRKYBQVo_C9q9weBiE94pxU-gUzIf_UoA7vzmw",
   },
 ];
 
@@ -279,7 +325,7 @@ export const footerColumns = [
   },
   {
     title: "Support",
-    links: ["Help centre", "Cancellation", "Safety", "Contact"],
+    links: ["Help centre", "Blogs", "Cancellation", "Contact"],
   },
   {
     title: "Legal",

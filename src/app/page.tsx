@@ -1,90 +1,35 @@
 import Link from "next/link";
 import { FloatingActions } from "@/components/FloatingActions";
 import { Footer } from "@/components/Footer";
+import { HomeSearch } from "@/components/HomeSearch";
 import { Icon } from "@/components/Icon";
 import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
+import { OffersCarousel } from "@/components/OffersCarousel";
 import { SectionHeading } from "@/components/SectionHeading";
 import { StayExperiences } from "@/components/StayExperiences";
 import { TrustBlock } from "@/components/TrustBlock";
-import { destinations, experiences, mostLoved, offers, packages } from "@/lib/data";
+import { blogs, destinations, experiences, mostLoved, packages } from "@/lib/data";
 
 export default function HomePage() {
   return (
     <div className="pt-16 md:pt-20">
       <Navbar />
       <main className="mx-auto flex max-w-[1280px] flex-col gap-12 py-8 pb-16 md:gap-16">
-        <section
-          id="offers"
-          className="px-container-margin-mobile md:px-container-margin-desktop"
-        >
-          <div className="mb-5 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-primary" />
-            <h2 className="text-lg font-semibold tracking-wide text-primary">Offers</h2>
-            <span className="h-px w-8 bg-primary" />
-          </div>
-          <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory">
-            {offers.map((offer) => (
-              <article
-                key={offer.title}
-                className="relative h-48 w-full flex-none overflow-hidden rounded-xl snap-center md:w-[560px]"
-              >
-                <img
-                  src={offer.image}
-                  alt={offer.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent p-6">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/80">
-                    {offer.label}
-                  </p>
-                  <h3 className="mb-4 max-w-[70%] text-2xl text-white">{offer.title}</h3>
-                  <button
-                    type="button"
-                    className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-on-primary"
-                  >
-                    {offer.cta}
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section
-          id="search"
-          className="px-container-margin-mobile md:px-container-margin-desktop"
-        >
-          <div className="mx-auto flex w-full max-w-2xl items-center rounded-full border border-outline-variant bg-surface px-4 py-2 card-shadow">
-            <input
-              className="w-full border-none bg-transparent py-2 text-on-surface outline-none"
-              placeholder="Search for a property / exp."
-              type="search"
-            />
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
-              <Icon name="search" />
-            </span>
-          </div>
-        </section>
+        <OffersCarousel />
+        <HomeSearch />
 
         <section className="px-container-margin-mobile md:px-container-margin-desktop">
-          <SectionHeading title="Pick a destination" icon="search" />
-          <div className="grid grid-cols-3 gap-3 md:gap-6">
+          <SectionHeading title="Pick a destination" />
+          <div className="flex gap-3 overflow-x-auto hide-scrollbar">
             {destinations.map((destination) => (
               <button
                 key={destination.name}
                 type="button"
-                className="group flex flex-col items-center"
+                className="flex min-w-[88px] flex-col items-center gap-2 rounded-xl border border-outline-variant bg-surface px-4 py-3 text-on-surface-variant hover:border-on-surface"
               >
-                <div className="relative mb-3 flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-outline-variant bg-surface">
-                  <img
-                    src={destination.image}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover opacity-30 transition-opacity group-hover:opacity-50"
-                  />
-                  <Icon name={destination.icon} className="z-10 text-4xl text-primary md:text-5xl" />
-                </div>
-                <span className="text-sm font-medium text-on-surface">{destination.name}</span>
+                <Icon name={destination.icon} className="text-[26px]" />
+                <span className="text-sm font-medium">{destination.name}</span>
               </button>
             ))}
           </div>
@@ -102,7 +47,7 @@ export default function HomePage() {
               >
                 <img src={item.img} alt={item.title} className="h-full w-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <span className="absolute inset-0 m-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-primary">
+                <span className="absolute inset-0 m-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/90">
                   <Icon name="play_arrow" filled className="text-[28px]" />
                 </span>
                 <p className="absolute bottom-3 left-3 right-3 text-sm font-medium text-white">
@@ -143,18 +88,20 @@ export default function HomePage() {
 
         <section className="px-container-margin-mobile md:px-container-margin-desktop">
           <SectionHeading title="Experiences" />
-          <div className="grid grid-cols-3 gap-3 md:gap-5">
+          <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar snap-x">
             {experiences.map((item) => (
               <Link
                 key={item.name}
                 href="/trust"
-                className="group relative overflow-hidden rounded-xl"
+                className="min-w-[280px] flex-1 snap-start overflow-hidden rounded-xl border border-outline-variant bg-surface md:min-w-0"
               >
-                <img src={item.img} alt={item.name} className="aspect-square w-full object-cover" />
-                <div className="absolute inset-0 bg-black/35" />
-                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-3 text-white">
-                  <span className="text-sm font-semibold">{item.name}</span>
-                  <Icon name="chevron_right" className="text-lg" />
+                <img src={item.img} alt={item.name} className="h-40 w-full object-cover" />
+                <div className="flex items-center justify-between p-5">
+                  <div>
+                    <h3 className="font-semibold">{item.name}</h3>
+                    <p className="mt-1 text-sm text-on-surface-variant">Add to your stay</p>
+                  </div>
+                  <Icon name="chevron_right" />
                 </div>
               </Link>
             ))}
@@ -162,6 +109,36 @@ export default function HomePage() {
         </section>
 
         <TrustBlock />
+
+        <section
+          id="blogs"
+          className="px-container-margin-mobile md:px-container-margin-desktop"
+        >
+          <SectionHeading
+            title="Blogs"
+            action={
+              <Link href="/blogs" className="text-sm font-medium text-on-surface-variant">
+                View all
+              </Link>
+            }
+          />
+          <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x md:grid md:grid-cols-3">
+            {blogs.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blogs/${post.slug}`}
+                className="min-w-[260px] flex-1 overflow-hidden rounded-xl border border-outline-variant bg-surface snap-start md:min-w-0"
+              >
+                <img src={post.img} alt={post.title} className="h-40 w-full object-cover" />
+                <div className="p-4">
+                  <p className="text-xs text-on-surface-variant">{post.date}</p>
+                  <h3 className="mt-2 text-base font-semibold">{post.title}</h3>
+                  <p className="mt-2 text-sm text-on-surface-variant">{post.excerpt}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
       <Footer />
       <FloatingActions />
