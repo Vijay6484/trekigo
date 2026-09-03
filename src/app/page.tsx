@@ -92,7 +92,7 @@ export default function HomePage() {
             {experiences.map((item) => (
               <Link
                 key={item.name}
-                href="/trust"
+                href="/experiences"
                 className="min-w-[280px] flex-1 snap-start overflow-hidden rounded-xl border border-outline-variant bg-surface md:min-w-0"
               >
                 <img src={item.img} alt={item.name} className="h-40 w-full object-cover" />

@@ -20,11 +20,6 @@ export function OffersCarousel() {
       id="offers"
       className="px-container-margin-mobile md:px-container-margin-desktop"
     >
-      <div className="mb-5 flex items-center justify-center gap-3">
-        <span className="h-px w-8 bg-outline" />
-        <h2 className="text-lg font-semibold tracking-wide text-on-surface">Offers</h2>
-        <span className="h-px w-8 bg-outline" />
-      </div>
       <div className="relative h-52 overflow-hidden rounded-2xl md:h-72">
         {offers.map((item, i) => (
           <article

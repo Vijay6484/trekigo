@@ -8,10 +8,9 @@ import { PHONE } from "@/lib/data";
 
 const links = [
   { href: "/", label: "Stays" },
-  { href: "/trust", label: "Experiences" },
-  { href: "/#packages", label: "Packages" },
+  { href: "/properties", label: "Properties" },
+  { href: "/experiences", label: "Experiences" },
   { href: "/blogs", label: "Blogs" },
-  { href: "/#offers", label: "Offers" },
 ];
 
 export function Navbar() {
