@@ -8,7 +8,7 @@ export function StickyBookBar({
   href?: string;
 }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-outline-variant bg-surface/95 px-4 py-3 backdrop-blur-xl md:px-8">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-outline-variant bg-surface/95 px-4 py-3 backdrop-blur-xl md:px-8 lg:hidden">
       <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4">
         <div>
           <p className="text-xs text-on-surface-variant">From</p>

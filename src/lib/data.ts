@@ -255,11 +255,36 @@ export const howToReach = [
 ];
 
 export const socialLinks = [
-  { name: "Instagram", short: "Insta", icon: "photo_camera", href: "#" },
-  { name: "Facebook", short: "FB", icon: "thumb_up", href: "#" },
-  { name: "YouTube", short: "YouTube", icon: "play_circle", href: "#" },
-  { name: "Reddit", short: "Reddit", icon: "forum", href: "#" },
-  { name: "X", short: "X", icon: "tag", href: "#" },
+  {
+    name: "Facebook",
+    short: "Facebook",
+    icon: "thumb_up",
+    href: "https://www.facebook.com/share/1Lwz1Jqi95/?mibextid=wwXIfr",
+  },
+  {
+    name: "Instagram",
+    short: "Insta",
+    icon: "photo_camera",
+    href: "https://www.instagram.com/trekigo.co?stkn=OGNseW1rOWNzdGg%3D&utm_source=qr",
+  },
+  {
+    name: "Threads",
+    short: "Threads",
+    icon: "alternate_email",
+    href: "https://www.threads.com/@trekigo.co?igshid=NTc4MTIwNjQ2YQ==",
+  },
+  {
+    name: "X",
+    short: "X",
+    icon: "tag",
+    href: "https://x.com/trekigo?s=11",
+  },
+  {
+    name: "Reddit",
+    short: "Reddit",
+    icon: "forum",
+    href: "https://www.reddit.com/u/trekiGo/s/3HhXbWzwNu",
+  },
 ];
 
 export const trustHighlights = [

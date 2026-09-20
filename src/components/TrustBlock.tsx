@@ -61,6 +61,8 @@ export function TrustBlock() {
             <a
               key={social.name}
               href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-xl border border-outline-variant bg-surface px-4 py-3 text-sm font-medium text-on-surface transition-colors hover:border-on-surface"
             >
               <Icon name={social.icon} />

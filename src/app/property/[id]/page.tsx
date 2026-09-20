@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Icon } from "@/components/Icon";
 import { InstagramStories } from "@/components/InstagramStories";
 import { PhotoGallery } from "@/components/PhotoGallery";
+import { PropertyBookingCard } from "@/components/PropertyBookingCard";
 import { PropertyCard } from "@/components/PropertyCard";
 import { PropertyHeader } from "@/components/PropertyHeader";
 import { StickyBookBar } from "@/components/StickyBookBar";
@@ -29,7 +30,8 @@ export default async function PropertyDetailsPage({
       <main className="mx-auto max-w-[1280px] px-container-margin-mobile py-6 pb-28 md:px-container-margin-desktop">
         <PhotoGallery images={galleryImages} alt={property.name} />
 
-        <div className="space-y-8">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-7">
           <section>
             <p className="text-sm font-medium text-on-surface-variant">{property.code}</p>
             <h1 className="mt-1 text-3xl text-on-surface">{property.name}</h1>
@@ -168,6 +170,10 @@ export default async function PropertyDetailsPage({
               ))}
             </div>
           </section>
+          </div>
+          <aside className="hidden lg:block lg:col-span-5">
+            <PropertyBookingCard property={property} />
+          </aside>
         </div>
 
         <section className="mt-12">
@@ -180,7 +186,7 @@ export default async function PropertyDetailsPage({
         </section>
       </main>
       <Footer />
-      <StickyBookBar price={property.price} />
+      <StickyBookBar price={property.price} href={`/checkout?id=${property.id}`} />
     </div>
   );
 }

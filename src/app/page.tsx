@@ -13,11 +13,15 @@ import { blogs, destinations, experiences, mostLoved, packages } from "@/lib/dat
 
 export default function HomePage() {
   return (
-    <div className="pt-16 md:pt-20">
-      <Navbar />
-      <main className="mx-auto flex max-w-[1280px] flex-col gap-12 py-8 pb-16 md:gap-16">
+    <div>
+      <div className="relative">
+        <Navbar overlay />
         <OffersCarousel />
-        <HomeSearch />
+      </div>
+      <main className="relative z-10 mx-auto flex max-w-[1280px] -mt-8 flex-col gap-12 pb-16 md:-mt-10 md:gap-16">
+        <div className="relative z-20">
+          <HomeSearch />
+        </div>
 
         <section className="px-container-margin-mobile md:px-container-margin-desktop">
           <SectionHeading title="Pick a destination" />

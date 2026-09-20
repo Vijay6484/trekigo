@@ -1,119 +1,203 @@
 "use client";
 
-import { useState } from "react";
-import { BookNowButton } from "@/components/BookNowButton";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { DateRangeCalendar } from "@/components/DateRangeCalendar";
+import { GuestRoomPicker } from "@/components/GuestRoomPicker";
 import { Icon } from "@/components/Icon";
-import { propertyImages } from "@/lib/data";
+import {
+  decodeRooms,
+  formatINR,
+  formatLongDate,
+  fromDateKey,
+  guestSummary,
+  nightsBetween,
+  parsePrice,
+  suggestedStay,
+  type RoomGuests,
+} from "@/lib/booking";
+import type { properties } from "@/lib/data";
 
-export function CheckoutForm() {
+type Property = (typeof properties)[number];
+
+type CheckoutFormProps = {
+  property: Property;
+  initialCheckIn?: string;
+  initialCheckOut?: string;
+  initialRooms?: string;
+};
+
+export function CheckoutForm({
+  property,
+  initialCheckIn,
+  initialCheckOut,
+  initialRooms,
+}: CheckoutFormProps) {
+  const suggested = suggestedStay();
+  const [checkIn, setCheckIn] = useState<Date | null>(
+    () => fromDateKey(initialCheckIn ?? "") ?? suggested.checkIn,
+  );
+  const [checkOut, setCheckOut] = useState<Date | null>(
+    () => fromDateKey(initialCheckOut ?? "") ?? suggested.checkOut,
+  );
+  const [rooms, setRooms] = useState<RoomGuests[]>(() => decodeRooms(initialRooms));
   const [meal, setMeal] = useState<"veg" | "nonveg">("veg");
   const [pay, setPay] = useState<"full" | "advance">("full");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [error, setError] = useState("");
+
+  const nights = checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0;
+  const guests = guestSummary(rooms);
+  const nightly = parsePrice(property.price);
+  const stayTotal = nightly * nights * rooms.length;
+  const cleaning = nights > 0 ? 1_200 * rooms.length : 0;
+  const service = Math.round(stayTotal * 0.06);
+  const total = stayTotal + cleaning + service;
+  const advance = Math.max(5_000, Math.round(total * 0.2));
+  const dueNow = pay === "advance" ? advance : total;
+  const canBook = nights > 0 && name.trim() && email.trim() && phone.trim();
+
+  const stayLabel = useMemo(() => {
+    if (!checkIn || !checkOut || nights === 0) return "Select your dates";
+    return `${formatLongDate(checkIn)} – ${formatLongDate(checkOut)}`;
+  }, [checkIn, checkOut, nights]);
+
+  function confirmBooking() {
+    if (!canBook) {
+      setError("Add dates, guest rooms, and your contact details to continue.");
+      return;
+    }
+    setError("");
+    setConfirmed(true);
+  }
+
+  if (confirmed) {
+    return (
+      <div className="mx-auto max-w-xl rounded-2xl border border-outline-variant bg-surface p-8 text-center card-shadow">
+        <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary-container">
+          <Icon name="check_circle" className="text-[28px]" />
+        </span>
+        <h1 className="text-2xl">Booking requested</h1>
+        <p className="mt-3 text-sm leading-6 text-on-surface-variant">
+          {property.name} is held for {guests.label.toLowerCase()} from {stayLabel}. We will
+          confirm on {email || "your email"} shortly.
+        </p>
+        <p className="mt-4 text-lg font-semibold">{formatINR(dueNow)} due now</p>
+        <Link
+          href={`/property/${property.id}`}
+          className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-semibold text-on-primary"
+        >
+          Back to property
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-      <div className="space-y-5 lg:col-span-7">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label className="rounded-xl border border-outline-variant bg-surface p-4">
-            <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-              <Icon name="calendar_month" className="text-primary text-[18px]" />
-              Date
-            </span>
-            <input
-              type="text"
-              defaultValue="15 Nov 2024 – 20 Nov 2024"
-              className="w-full border-none bg-transparent p-0 text-base font-medium text-on-surface outline-none"
-            />
-          </label>
-          <label className="rounded-xl border border-outline-variant bg-surface p-4">
-            <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-              <Icon name="group" className="text-primary text-[18px]" />
-              Add guest
-            </span>
-            <input
-              type="text"
-              defaultValue="2 guests, 1 room"
-              className="w-full border-none bg-transparent p-0 text-base font-medium text-on-surface outline-none"
-            />
-          </label>
+      <div className="space-y-6 lg:col-span-7">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+            Booking
+          </p>
+          <h1 className="mt-1 text-3xl">Confirm your stay</h1>
+          <p className="mt-2 text-sm text-on-surface-variant">
+            {property.name} · {property.loc}, Maharashtra
+          </p>
         </div>
 
-        <h1 className="pt-2 text-2xl md:text-3xl">Confirm and pay</h1>
-
-        <section className="space-y-4 rounded-xl border border-outline-variant bg-surface p-5">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-              A. Property name
-            </p>
-            <p className="mt-1 text-lg font-semibold">Neon Peak Villa</p>
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 md:p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Icon name="calendar_month" />
+            <h2 className="text-lg">Dates</h2>
           </div>
-          <div className="grid gap-4 border-t border-outline-variant pt-4 sm:grid-cols-2">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-                B. Date
-              </p>
-              <p className="mt-1 font-medium">15 Nov – 20 Nov 2024</p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-                C. Guest room
-              </p>
-              <p className="mt-1 font-medium">1 villa · 2 guests</p>
-            </div>
-          </div>
+          <DateRangeCalendar
+            checkIn={checkIn}
+            checkOut={checkOut}
+            onChange={(nextIn, nextOut) => {
+              setCheckIn(nextIn);
+              setCheckOut(nextOut);
+            }}
+          />
         </section>
 
-        <section className="space-y-4 rounded-xl border border-outline-variant bg-surface p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            D. Name, email & number
-          </p>
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 md:p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Icon name="group" />
+            <h2 className="text-lg">Guests & rooms</h2>
+          </div>
+          <GuestRoomPicker rooms={rooms} onChange={setRooms} />
+        </section>
+
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 md:p-6">
+          <h2 className="mb-4 text-lg">Guest details</h2>
           <div className="grid gap-3">
-            <input
-              className="rounded-lg border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
-              placeholder="Full name"
-              defaultValue="Aarav Mehta"
-            />
-            <input
-              className="rounded-lg border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
-              placeholder="Email"
-              type="email"
-              defaultValue="aarav@email.com"
-            />
-            <input
-              className="rounded-lg border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
-              placeholder="Phone number"
-              defaultValue="+91 98765 43210"
-            />
+            <label className="block">
+              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                Full name
+              </span>
+              <input
+                className="w-full rounded-xl border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
+                placeholder="Name on the booking"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                Email
+              </span>
+              <input
+                className="w-full rounded-xl border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
+                placeholder="you@email.com"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                Phone
+              </span>
+              <input
+                className="w-full rounded-xl border border-outline-variant bg-background px-4 py-3 outline-none focus:border-primary"
+                placeholder="+91"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
+            </label>
           </div>
         </section>
 
-        <section className="space-y-3 rounded-xl border border-outline-variant bg-surface p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            E. Meal preference
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 md:p-6">
+          <h2 className="text-lg">Meal preference</h2>
+          <p className="mt-1 text-sm text-on-surface-variant">
+            Breakfast is included. Tell the host your preference.
           </p>
-          <p className="text-sm text-on-surface-variant">Depends on the property</p>
-          <div className="flex gap-3">
+          <div className="mt-4 flex gap-3">
             {(["veg", "nonveg"] as const).map((option) => (
               <button
                 key={option}
                 type="button"
                 onClick={() => setMeal(option)}
-                className={`rounded-full px-4 py-2 text-sm font-medium capitalize ${
+                className={`rounded-full px-5 py-2.5 text-sm font-medium ${
                   meal === option
                     ? "bg-primary text-on-primary"
-                    : "bg-primary-container text-primary"
+                    : "bg-primary-container text-on-surface"
                 }`}
               >
-                {option === "nonveg" ? "Non-veg" : "Veg"}
+                {option === "nonveg" ? "Non-veg" : "Vegetarian"}
               </button>
             ))}
           </div>
         </section>
 
-        <section className="space-y-3 rounded-xl border border-outline-variant bg-surface p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            F. Pay advance / full
-          </p>
-          <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-outline-variant p-4 has-[:checked]:border-primary">
+        <section className="space-y-3 rounded-2xl border border-outline-variant bg-surface p-5 md:p-6">
+          <h2 className="text-lg">Payment</h2>
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-outline-variant p-4 has-[:checked]:border-primary has-[:checked]:bg-primary-container/60">
             <input
               type="radio"
               name="pay"
@@ -122,13 +206,13 @@ export function CheckoutForm() {
               className="mt-1 accent-primary"
             />
             <div>
-              <div className="font-semibold">Pay in full</div>
-              <div className="text-sm text-on-surface-variant">
-                Pay the total amount now for a hassle-free stay.
-              </div>
+              <p className="font-semibold">Pay in full</p>
+              <p className="mt-1 text-sm text-on-surface-variant">
+                {nights > 0 ? `${formatINR(total)} now. Free cancellation for 24 hours.` : "Select dates to see the total."}
+              </p>
             </div>
           </label>
-          <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-outline-variant p-4 has-[:checked]:border-primary">
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-outline-variant p-4 has-[:checked]:border-primary has-[:checked]:bg-primary-container/60">
             <input
               type="radio"
               name="pay"
@@ -137,57 +221,104 @@ export function CheckoutForm() {
               className="mt-1 accent-primary"
             />
             <div>
-              <div className="font-semibold">Pay advance</div>
-              <div className="text-sm text-on-surface-variant">
-                Pay ₹5,000 now, rest at the property.
-              </div>
+              <p className="font-semibold">Pay advance</p>
+              <p className="mt-1 text-sm text-on-surface-variant">
+                {nights > 0
+                  ? `${formatINR(advance)} now, ${formatINR(total - advance)} at the property.`
+                  : "Reserve with a smaller amount, pay the rest at check-in."}
+              </p>
             </div>
           </label>
         </section>
 
-        <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            G. Book now
-          </p>
-          <BookNowButton />
-        </div>
+        {error ? <p className="text-sm text-error">{error}</p> : null}
+
+        <button
+          type="button"
+          onClick={confirmBooking}
+          className="w-full rounded-xl bg-primary py-4 text-sm font-semibold text-on-primary transition-colors hover:bg-primary-fixed-dim disabled:opacity-40"
+          disabled={!canBook}
+        >
+          {pay === "advance" && nights > 0 ? `Pay ${formatINR(advance)} to book` : "Confirm and book"}
+        </button>
+        <p className="text-center text-xs text-on-surface-variant">
+          You will not be charged until the host confirms.
+        </p>
       </div>
 
       <aside className="lg:col-span-5">
-        <div className="sticky top-28 rounded-xl border border-outline-variant bg-surface p-5 card-shadow">
-          <div className="mb-5 flex gap-4 border-b border-outline-variant pb-5">
-            <img
-              src={propertyImages.checkout}
-              alt="Neon Peak Villa"
-              className="h-24 w-24 rounded-lg object-cover"
-            />
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Villa</p>
-              <h3 className="mt-1 font-semibold">Neon Peak Villa</h3>
-              <p className="mt-1 flex items-center text-sm text-on-surface-variant">
-                <Icon name="location_on" className="mr-1 text-[16px] text-primary" />
-                Lonavala, Maharashtra
+        <div className="sticky top-28 space-y-4">
+          <div className="rounded-2xl border border-outline-variant bg-surface p-5 card-shadow">
+            <div className="mb-5 flex gap-4 border-b border-outline-variant pb-5">
+              <img
+                src={property.img}
+                alt={property.name}
+                className="h-24 w-24 rounded-xl object-cover"
+              />
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+                  {property.type}
+                </p>
+                <h3 className="mt-1 truncate font-semibold">{property.name}</h3>
+                <p className="mt-1 flex items-center text-sm text-on-surface-variant">
+                  <Icon name="location_on" className="mr-1 text-[16px]" />
+                  {property.loc}
+                </p>
+                <p className="mt-1 flex items-center text-sm">
+                  <Icon name="star" filled className="mr-1 text-[16px] text-accent" />
+                  {property.rating}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3 border-b border-outline-variant pb-5 text-sm">
+              <div className="flex justify-between gap-4">
+                <span className="text-on-surface-variant">Dates</span>
+                <span className="text-right font-medium">{stayLabel}</span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-on-surface-variant">Guests</span>
+                <span className="text-right font-medium">{guests.label}</span>
+              </div>
+              <p className="text-right text-xs text-on-surface-variant">{guests.detail}</p>
+            </div>
+
+            <h3 className="mt-5 mb-3 font-semibold">Price details</h3>
+            {nights > 0 ? (
+              <div className="space-y-3 text-sm text-on-surface-variant">
+                <div className="flex justify-between">
+                  <span>
+                    {formatINR(nightly)} × {nights} night{nights === 1 ? "" : "s"}
+                    {rooms.length > 1 ? ` × ${rooms.length} rooms` : ""}
+                  </span>
+                  <span>{formatINR(stayTotal)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Cleaning fee</span>
+                  <span>{formatINR(cleaning)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Service fee</span>
+                  <span>{formatINR(service)}</span>
+                </div>
+                <div className="flex justify-between border-t border-outline-variant pt-3 text-base font-semibold text-on-surface">
+                  <span>Total</span>
+                  <span>{formatINR(total)}</span>
+                </div>
+                <div className="flex justify-between text-on-surface">
+                  <span>Due now</span>
+                  <span className="font-semibold">{formatINR(dueNow)}</span>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-on-surface-variant">
+                Select check-in and check-out to see the total.
               </p>
-            </div>
+            )}
           </div>
-          <h3 className="mb-3 font-semibold">Price details</h3>
-          <div className="space-y-3 border-b border-outline-variant pb-5 text-sm text-on-surface-variant">
-            <div className="flex justify-between">
-              <span>₹18,500 × 5 nights</span>
-              <span>₹92,500</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Cleaning fee</span>
-              <span>₹1,200</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Service fee</span>
-              <span>₹2,400</span>
-            </div>
-          </div>
-          <div className="mt-4 flex items-center justify-between text-lg font-semibold text-primary">
-            <span>Total</span>
-            <span>{pay === "advance" ? "₹5,000 due now" : "₹96,100"}</span>
+          <div className="flex items-start gap-2 rounded-xl bg-primary-container px-4 py-3 text-xs leading-5 text-on-surface-variant">
+            <Icon name="verified_user" className="text-[18px] text-on-surface" />
+            Free cancellation for 24 hours. Check-in 2:00 PM · Check-out 11:00 AM.
           </div>
         </div>
       </aside>

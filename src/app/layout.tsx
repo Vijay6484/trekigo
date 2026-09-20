@@ -17,6 +17,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Trekigo - Luxury Villa & Experience Booking",
   description: "Go Wild, Stay Chill. Book luxury villas, cottages, and experiences.",
+  icons: {
+    icon: "/trekigo-logo.png",
+    apple: "/trekigo-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
