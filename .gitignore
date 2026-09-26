@@ -21,6 +21,11 @@ out/
 dist/
 admin/dist/
 
+# Kept local only. The GitHub repo is the Vercel website.
+/admin/
+/backend/
+/docker-compose.yml
+
 # backend
 backend/access.log
 backend/data/*.sqlite
